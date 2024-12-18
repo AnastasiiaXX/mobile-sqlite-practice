@@ -1,11 +1,19 @@
 import React, { useState, useEffect } from 'react';
-import { View, Text, FlatList, StyleSheet, RefreshControl } from 'react-native';
+import { Text, FlatList, StyleSheet, RefreshControl } from 'react-native';
 import ProductListItem from '../../components/ListItem';
+import { initDatabase, onAddToCart, onRemoveFromCart } from '../../db/database';
+import { SafeAreaView } from 'react-native';
 
 
-const goodsList = ({ cartItems, setCartItems }) => {
+const GoodsList = () => {
     const [products, setProducts] = useState([]);
     const [isLoading, setIsLoading] = useState(true);
+    const [error, catchError] = useState(null)
+
+    useEffect(() => {
+      initDatabase();
+      loadProducts();
+    }, [])
 
     const loadProducts = async () => {
         setIsLoading(true);
@@ -15,32 +23,52 @@ const goodsList = ({ cartItems, setCartItems }) => {
             setProducts(data);
         } catch (error) {
             console.error('Error fetching products:', error);
+            catchError(error);
         }
         setIsLoading(false);
     };
 
-    useEffect(() => {
-        loadProducts();
-    }, []);
-
-    const handleAddToCart = (product) => {
-        setCartItems((prevItems) => [...prevItems, product]);
+    const handleAddToCart = async (product) => {
+        try {
+          await onAddToCart(product);
+          catchError(null);
+        } catch (error) {
+          catchError(error);
+        }
     };
 
+    const handleRemoveFromCart = async (id) => {
+      try {
+        await onRemoveFromCart(id);
+        catchError(null);
+      } catch (error) {
+        catchError(error);
+      }
+    };
+
+    if (isLoading) {
+    return <Text>Loading...</Text>;
+    }
+
     return (
-        <View style={styles.container}>
+        <SafeAreaView style={styles.container}>
             <Text style={styles.title}>Product List</Text>
+            {error && <Text style={styles.error}>{error.message}</Text>}
             <FlatList
                 data={products}
                 renderItem={({ item }) => (
-                    <ListItem product={item} onAddToCart={handleAddToCart} />
+                    <ProductListItem 
+                        product={item} 
+                        onAddToCart={handleAddToCart} 
+                        onRemoveFromCart={handleRemoveFromCart} 
+                    />
                 )}
                 keyExtractor={(item) => item.id.toString()}
                 refreshControl={
                     <RefreshControl refreshing={isLoading} onRefresh={loadProducts} />
                 }
             />
-        </View>
+        </SafeAreaView>
     );
 };
 
@@ -57,4 +85,4 @@ const styles = StyleSheet.create({
     },
 });
 
-export default goodsList;
+export default GoodsList;

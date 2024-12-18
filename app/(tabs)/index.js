@@ -1,19 +1,18 @@
 
 import React, { useState } from 'react';
 import { createBottomTabNavigator } from '@react-navigation/bottom-tabs';
-import { NavigationContainer } from '@react-navigation/native';
-import goodsList from './goodsList'; // экран с товарами
-import CartScreen from './cart'; // экран с корзиной
+import GoodsList from './goodsList';
+import CartScreen from './cart';
 
 const Tab = createBottomTabNavigator();
 
 const Tabs = () => {
-  const [cartItems, setCartItems] = useState([]); // Состояние для корзины
+  const [cartItems, setCartItems] = useState([]); 
 
   return (
       <Tab.Navigator>
         <Tab.Screen name="Products">
-          {() => <goodsList cartItems={cartItems} setCartItems={setCartItems} />}
+          {() => <GoodsList cartItems={cartItems} setCartItems={setCartItems} />}
         </Tab.Screen>
         <Tab.Screen name="Cart">
           {() => <CartScreen cartItems={cartItems} setCartItems={setCartItems} />}

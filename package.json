@@ -11,14 +11,18 @@
   "dependencies": {
     "expo": "~52.0.19",
     "expo-router": "^4.0.13",
-    "expo-sqlite": "^15.0.3",
+    "expo-sqlite": "~15.0.3",
     "expo-status-bar": "~2.0.0",
     "react": "18.3.1",
     "react-native": "0.76.5",
     "react-native-web": "~0.19.13"
   },
   "devDependencies": {
-    "@babel/core": "^7.20.0"
+    "@babel/core": "^7.20.0",
+    "@eslint/js": "^8.57.1",
+    "eslint": "^8.57.1",
+    "eslint-plugin-react": "^7.37.2",
+    "globals": "^15.14.0"
   },
   "private": true
 }
