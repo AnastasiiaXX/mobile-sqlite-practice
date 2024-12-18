@@ -1,15 +1,15 @@
 import React from 'react';
 import { View, Text, TouchableOpacity, StyleSheet, Image } from 'react-native';
 
-const CartItem = ({ product, onRemove }) => {
+const CartItem = ({ item, onRemoveFromCart }) => {
     return (
         <View style={styles.container}>
-            <Image source={{ uri: product.image }} style={styles.image} />
-            <Text style={styles.name}>{product.name}</Text>
-            <Text style={styles.price}>${product.price.toFixed(2)}</Text>
-            <Text style={styles.quantity}>Qty: {product.quantity}</Text>
-            <TouchableOpacity style={styles.removeButton} onPress={() => onRemove(product)}>
-                <Text style={styles.removeButtonText}>Remove</Text>
+            <Image source={{ uri: item.image }} style={styles.image} />
+            <Text style={styles.name}>{item.title}</Text>
+            <Text style={styles.price}>${item.price.toFixed(2)}</Text>
+            <Text style={styles.quantity}>Qty: {item.quantity}</Text>
+            <TouchableOpacity style={styles.button} onPress={() => onRemoveFromCart(item)}>
+                <Text style={styles.buttonText}>Remove from Cart</Text>
             </TouchableOpacity>
         </View>
     );
@@ -49,14 +49,14 @@ const styles = StyleSheet.create({
         color: '#666',
         marginVertical: 6,
     },
-    removeButton: {
+    button: {
         backgroundColor: '#FF4C4C',
         borderRadius: 8,
         paddingVertical: 6,
         alignItems: 'center',
         marginTop: 12,
     },
-    removeButtonText: {
+    buttonText: {
         color: '#FFFFFF',
         fontWeight: 'bold',
         fontSize: 14,

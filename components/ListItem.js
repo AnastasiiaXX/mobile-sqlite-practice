@@ -1,11 +1,11 @@
 import React from 'react';
 import { View, Text, TouchableOpacity, StyleSheet, Image } from 'react-native';
 
-const ListItem = ({ product, onAddToCart }) => {
+const ProductListItem = ({ product, onAddToCart }) => {
     return (
         <View style={styles.card}>
             <Image source={{ uri: product.image }} style={styles.image} />
-            <Text style={styles.name}>{product.name}</Text>
+            <Text style={styles.name}>{product.ntitle}</Text>
             <Text style={styles.price}>${product.price.toFixed(2)}</Text>
             <TouchableOpacity style={styles.button} onPress={() => onAddToCart(product)}>
                 <Text style={styles.buttonText}>Add to Cart</Text>
@@ -59,4 +59,4 @@ const styles = StyleSheet.create({
     },
 });
 
-export default ListItem;
+export default ProductListItem;

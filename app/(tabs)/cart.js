@@ -1,24 +1,33 @@
 import React from 'react';
-import { View, Text, StyleSheet } from 'react-native';
+import { View, Text, FlatList, StyleSheet } from 'react-native';
 import CartItem from '../../components/CartItem';
 
-export default function CartScreen() {
-  return (
-    <View style={styles.container}>
-      <Text style={styles.title}>Cart</Text>
-      {/* Cart */}
-    </View>
-  );
-}
+const CartScreen = ({ cartItems, onRemoveFromCart }) => {
+    return (
+        <View style={styles.container}>
+            <Text style={styles.title}>Your Cart</Text>
+            <FlatList
+                data={cartItems}
+                renderItem={({ item }) => (
+                    <CartItem item={item} onRemove={onRemoveFromCart} />
+                )}
+                keyExtractor={(item) => item.id.toString()}
+            />
+        </View>
+    );
+};
 
 const styles = StyleSheet.create({
-  container: {
-    flex: 1,
-    justifyContent: 'center',
-    alignItems: 'center',
-  },
-  title: {
-    fontSize: 24,
-    fontWeight: 'bold',
-  },
+    container: {
+        flex: 1,
+        paddingTop: 20,
+        paddingHorizontal: 16,
+    },
+    title: {
+        fontSize: 24,
+        fontWeight: 'bold',
+        marginBottom: 20,
+    },
 });
+
+export default CartScreen;
