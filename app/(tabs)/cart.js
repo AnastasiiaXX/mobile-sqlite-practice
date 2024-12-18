@@ -1,5 +1,6 @@
 import React from 'react';
 import { View, Text, StyleSheet } from 'react-native';
+import CartItem from '../../components/CartItem';
 
 export default function CartScreen() {
   return (
