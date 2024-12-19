@@ -1,19 +1,20 @@
 import React, { useState, useEffect } from 'react';
 import { Text, FlatList, StyleSheet, RefreshControl } from 'react-native';
 import ProductListItem from '../../components/ListItem';
-import { initDatabase, onAddToCart, onRemoveFromCart } from '../../db/database';
+import { initDatabase, onAddToCart, onRemoveFromCart, getCartItems } from '../../db/database';
 import { SafeAreaView } from 'react-native';
-
 
 const GoodsList = () => {
     const [products, setProducts] = useState([]);
     const [isLoading, setIsLoading] = useState(true);
-    const [error, catchError] = useState(null)
+    const [error, setError] = useState(null);
+    const [cartItems, setCartItems] = useState({});
 
     useEffect(() => {
-      initDatabase();
-      loadProducts();
-    }, [])
+        initDatabase();
+        loadProducts();
+        loadCartItems();
+    }, []);
 
     const loadProducts = async () => {
         setIsLoading(true);
@@ -23,31 +24,46 @@ const GoodsList = () => {
             setProducts(data);
         } catch (error) {
             console.error('Error fetching products:', error);
-            catchError(error);
+            setError(error);
         }
         setIsLoading(false);
     };
 
+    const loadCartItems = async () => {
+        try {
+            const items = await getCartItems();
+            const cartMap = items.reduce((acc, item) => {
+                acc[item.id] = item.quantity;
+                return acc;
+            }, {});
+            setCartItems(cartMap);
+        } catch (error) {
+            console.error('Error loading cart items:', error);
+        }
+    };
+
     const handleAddToCart = async (product) => {
         try {
-          await onAddToCart(product);
-          catchError(null);
+            await onAddToCart(product);
+            await loadCartItems();
         } catch (error) {
-          catchError(error);
+            setError(error);
         }
     };
 
     const handleRemoveFromCart = async (id) => {
-      try {
-        await onRemoveFromCart(id);
-        catchError(null);
-      } catch (error) {
-        catchError(error);
-      }
+        try {
+            await onRemoveFromCart(id);
+            await loadCartItems();
+        } catch (error) {
+            setError(error);
+        }
     };
 
+    const getQuantity = (id) => cartItems[id] || 0;
+
     if (isLoading) {
-    return <Text>Loading...</Text>;
+        return <Text>Loading...</Text>;
     }
 
     return (
@@ -57,10 +73,11 @@ const GoodsList = () => {
             <FlatList
                 data={products}
                 renderItem={({ item }) => (
-                    <ProductListItem 
-                        product={item} 
-                        onAddToCart={handleAddToCart} 
-                        onRemoveFromCart={handleRemoveFromCart} 
+                    <ProductListItem
+                        product={item}
+                        onAddToCart={handleAddToCart}
+                        onRemoveFromCart={handleRemoveFromCart}
+                        getQuantity={getQuantity}
                     />
                 )}
                 keyExtractor={(item) => item.id.toString()}
@@ -82,6 +99,10 @@ const styles = StyleSheet.create({
         fontSize: 24,
         fontWeight: 'bold',
         marginBottom: 20,
+    },
+    error: {
+        color: 'red',
+        marginBottom: 10,
     },
 });
 

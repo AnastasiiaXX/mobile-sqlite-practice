@@ -8,7 +8,7 @@ export const initDatabase = () => {
             CREATE TABLE IF NOT EXISTS cart (
                 id INTEGER PRIMARY KEY NOT NULL,
                 image TEXT,
-                title TEXT,
+                title VARCHAR(100),
                 price REAL,
                 quantity INTEGER NOT NULL
             );

@@ -1,8 +1,16 @@
-import React from 'react';
+import React, { useState, useEffect } from 'react';
 import { View, Text, FlatList, StyleSheet } from 'react-native';
 import CartItem from '../../components/CartItem';
+import { onAddToCart, onRemoveFromCart, getCartItems, deleteItem } from '../../db/database';
+import { SafeAreaView } from 'react-native';
 
-const CartScreen = ({ cartItems, onRemoveFromCart }) => {
+const CartScreen = () => {
+    const [products, setProducts] = useState([]);
+    const [isLoading, setIsLoading] = useState(true);
+    const [error, catchError] = useState(null)
+
+    
+
     return (
         <View style={styles.container}>
             <Text style={styles.title}>Your Cart</Text>

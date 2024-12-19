@@ -19,25 +19,21 @@ const styles = StyleSheet.create({
     container: {
         backgroundColor: '#F7F7F7',
         borderRadius: 10,
-        padding: 14,
-        marginVertical: 12,
+        padding: 10,
+        marginVertical: 10,
         flexDirection: 'column',
-        shadowColor: '#000',
-        shadowOffset: { width: 0, height: 2 },
-        shadowOpacity: 0.25,
-        shadowRadius: 4,
-        elevation: 5,
     },
     image: {
         width: 90,
         height: 90,
         borderRadius: 10,
-        marginBottom: 12,
+        marginBottom: 10,
     },
-    name: {
+    title: {
         fontSize: 16,
         fontWeight: 'bold',
         color: '#333',
+        width: '50%'
     },
     price: {
         fontSize: 18,
@@ -52,9 +48,7 @@ const styles = StyleSheet.create({
     button: {
         backgroundColor: '#FF4C4C',
         borderRadius: 8,
-        paddingVertical: 6,
-        alignItems: 'center',
-        marginTop: 12,
+        paddingVertical: 12,
     },
     buttonText: {
         color: '#FFFFFF',
