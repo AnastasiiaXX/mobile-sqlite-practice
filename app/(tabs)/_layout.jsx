@@ -1,6 +1,6 @@
 import React, { useState } from 'react';
 import { createBottomTabNavigator } from '@react-navigation/bottom-tabs';
-import GoodsList from './_layout';
+import GoodsList from './index';
 import CartScreen from './cart';
 import Ionicons from '@expo/vector-icons/Ionicons';
 
@@ -27,10 +27,10 @@ const Tabs = () => {
           tabBarInactiveTintColor: 'gray',
         })}
       >
-        <Tab.Screen name="Products">
+        <Tab.Screen name="index">
           {() => <GoodsList cartItems={cartItems} setCartItems={setCartItems} />}
         </Tab.Screen>
-        <Tab.Screen name="Cart">
+        <Tab.Screen name="cart">
           {() => <CartScreen cartItems={cartItems} setCartItems={setCartItems} />}
         </Tab.Screen>
       </Tab.Navigator>

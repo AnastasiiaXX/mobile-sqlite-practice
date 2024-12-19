@@ -21,7 +21,7 @@ export const initDatabase = () => {
 };
 
 
-export const onAddToCart = (product) => {
+export const onAddToCart = (item) => {
     try {
         const db = SQLite.openDatabaseSync('cart.db');
 
@@ -29,12 +29,12 @@ export const onAddToCart = (product) => {
             INSERT INTO cart (id, image, title, price, quantity) 
             VALUES (?, ?, ?, ?, ?) 
             ON CONFLICT(id) DO UPDATE SET quantity = quantity + 1;`, 
-            [product.id, product.image, product.title, product.price, 1]
+            [item.id, item.image, item.title, item.price, 1]
         );
 
-        console.log('Product added to cart', product);
+        console.log('Item added to cart', item);
     } catch (error) {
-        console.error('Error adding product to cart: ', error);
+        console.error('Error adding item to cart: ', error);
     }
 };
 
@@ -56,9 +56,9 @@ export const deleteItem = (id) => {
 
         db.runSync('DELETE FROM cart WHERE id = ?;', [id]);
 
-        console.log('Product removed from cart', id);
+        console.log('Item removed from cart', id);
     } catch (error) {
-        console.error('Error removing product from cart: ', error);
+        console.error('Error removing item from cart: ', error);
     }
 };
 
@@ -71,13 +71,13 @@ export const onRemoveFromCart = (id) => {
           tx.executeSql('SELECT quantity FROM cart WHERE id = ?;', [id], (_, { rows }) => {
               if (rows.length > 0 && rows.item(0).quantity <= 0) {
                   tx.executeSql('DELETE FROM cart WHERE id = ?;', [id]);
-                  console.log('Product removed from cart due to zero quantity', id);
+                  console.log('Item removed from cart due to zero quantity', id);
               } else {
                   console.log('Quantity reduced by 1', rows.item(0).quantity);
               }
           });
       }); 
       } catch (error) {
-        console.error('Error removing product from cart: ', error);
+        console.error('Error removing item from cart: ', error);
     }
 };
